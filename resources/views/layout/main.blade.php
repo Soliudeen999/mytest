@@ -27,37 +27,36 @@
         <div class="row mx-0">
             <div class="col-auto pr-0 bg-primary" style="height: auto; color: white; margin-right: 0px !important;">
                 <ul class="list-group pt-5">
-                    <li class="list-group-item d-flex mt-5 justify-content-between align-items-center no-border">
-                        <a href="#" class="active"><i class="feather icon-inbox white mr-2"></i></a>
 
-                    </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center no-border">
-                        <a href="#"><i class="feather icon-star mr-2 white"></i></a>
+                        <a href="#"><i class="feather icon-zoom-in mr-2 white"></i></a>
                 
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center no-border">
-                        <a href="#"><i class="feather icon-clock mr-2 white"></i></a>
+                        <a href="#"><i class="feather icon-archive mr-2 white"></i></a>
                   
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center no-border">
-                        <a href="#"><i class="feather icon-send mr-2 white"></i></a>
+                        <a href="#"><i class="feather icon-user mr-2 white"></i></a>
                    
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center no-border">
+                        <a href="#"><i class="feather icon-message-circle mr-2 white"></i></a>
+
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center no-border">
                         <a href="#"><i class="feather icon-file mr-2 white"></i></a>
-
                     </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center no-border">
-                        <a href="#"><i class="feather icon-award mr-2 white"></i></a>
 
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center no-border">
-                        <a href="#"><i class="feather icon-alert-octagon mr-2 white"></i></a>
 
-                    </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center no-border mt-10">
-                        <a href="#"><i class="feather icon-trash mr-2 white"></i></a>
-
+                        <a href="#"><i class="feather icon-settings mr-2 white"></i></a>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center no-border">
+                        <img src="assets/images/users/profile.svg" class="img-fluid float-right" width="20" alt="product">
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center no-border">
+                        <a href="#"><i class="feather icon-menu mr-2 white"></i></a>
                     </li>
                 </ul>      
             </div>
@@ -71,10 +70,13 @@
                     @include('layout.leftbar')
                     <!-- End Leftbar -->
                     <!-- Start Rightbar -->
-                    @include('layout.rightbar')          
+
+                    @include('layout.rightbar')    
+
                     @yield('content')
                     <!-- End Rightbar --> 
                 </div>
+                
             </div>
         </div>
         <!-- End Containerbar -->

@@ -270,8 +270,19 @@
                     @yield('butt')
                 </div>                        
             </div>
-        </div>          
+        </div>        
     </div>
+    @if ($errors->any())
+        <div class="container mt-2">
+            <div class="alert alert-danger">
+                <ul class="list-unstyled">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    @endif  
     <!-- End Breadcrumbbar -->
     @yield('rightbar-content')
     <!-- Start Footerbar -->
