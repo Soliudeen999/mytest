@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use App\Http\Requests\createUserRequest;
 use App\Http\Requests\updateUserRequest;
 use Illuminate\Support\Facades\Hash;
@@ -16,24 +17,26 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::paginate();
-        $roles = Role::all();
-        return view('users.index', compact('users', 'roles'));
+        return view('dashboard', ['users' => User::all(), 'roles' => Role::all()]);
     }
 
     public function fetchUser(User $user)
     {
         return response()->json([
             'status' => true,
-            'data' => $user
+            'data' => User::where('id', $user->id)->with('roles')->first()
         ]);
     }
     
     public function destroy(User $user)
-    {
-        // check permission
+    {   
+        foreach($user->roles as $role)
+        {
+            $user->removeRole($role);
+        }
+        toast('User Deleted Successfully', 'success');
         $user->delete();
-        return view('users.index');
+        return redirect()->back();
     }
 
     public function create(createUserRequest $request)
@@ -46,7 +49,7 @@ class UserController extends Controller
             'designation' => $request->designation,
             'employee_id' => $request->employee_id,
             'email' => $request->email,
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make($request->password),
         ]);
 
         $user->assignRole($request->role);
@@ -59,21 +62,24 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function UpdateUser(updateUserRequest $request, User $user)
+    public function UpdateUser(Request $request, User $user)
     {
-        $user->username = $request->username;
-        $user->firstname = $request->firstname;
-        $user->lastname = $request->lastname;
-        $user->phone_number = $request->phone_number;
-        $user->designation = $request->designation;
-        $user->employee_id = $request->employee_id;
-        $user->email = $request->email;
-        $user->username = Hash::make($request->username);
+        $user->update([
+            'username' => $request->username,
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'phone_number' => $request->phone_number,
+            'designation' => $request->designation,
+            'employee_id' => $request->employee_id,
+            'email' => $request->email,
+        ]);
 
-        $user->save();
+        if ($request->password) {
+            $user->update(['password' => Hash::make($request->password)]);
+        }
 
         $user->syncRoles($request->role);
-        toast('User Created Successfully', 'success');
+        toast('User Updated Successfully', 'success');
         return redirect()->back();
     }
 }

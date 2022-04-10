@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
+use App\Models\User;
+
 class HomeController extends Controller
 {
     /**
@@ -25,6 +27,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard', ['roles' => Role::all()]);
+        return view('dashboard', ['roles' => Role::all(), 'users' => User::all()]);
     }
 }

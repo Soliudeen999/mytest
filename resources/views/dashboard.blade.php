@@ -37,6 +37,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @forelse($users as $user)
                                 <tr>
                                     <td>
                                         <div class="row">
@@ -44,26 +45,48 @@
                                                 <img src="assets/images/users/profile.svg" class="img-fluid float-right" width="65" alt="product">
                                             </div>
                                             <div class="col-7 py-2 pl-0">
-                                                <h6>Me</h6>
-                                                <p class="text-muted">John Doe</p>
+                                                <h6>{{ $user->fullname }}</h6>
+                                                <p class="text-muted">{{ $user->email }}</p>
                                             </div>
                                         </div>
                                     </td>
-                                    <td><span class="badge badge-pill badge-danger">Super Admin</span></td>
-                                    <td>2011/04/25</td>
-                                    <td>CEO and Founder</td>
+                                    <td>
+                                        @forelse($user->roles as $role)
+                                            @if($role->name == 'Super Admin')
+                                                <span class="badge badge-pill badge-danger">{{ $role->name }}</span>
+                                            @elseif($role->name == 'Admin')
+                                                <span class="badge badge-pill badge-primary">{{ $role->name }}</span>
+                                            @elseif($role->name == 'HR Admin')
+                                                <span class="badge badge-pill badge-success">{{ $role->name }}</span>
+                                            @else
+                                                <span class="badge badge-pill badge-light">{{ $role->name }}</span>
+                                            @endif
+                                        @empty
+
+                                        @endforelse
+                                    </td>
+                                    <td>{{ $user->created_at->format('d M, Y') }}</td>
+                                    <td>{{ $user->designation }}</td>
                                     <td>
                                         <div class="button-list">
                                             @can('write')
-                                            <a href="#" class="btn btn-success-rgba" onclick="editUser('{{ route('user.fetch', ['user' => 1]) }}')"><i class="feather icon-edit-2"></i></a>
+                                            <a href="#" class="btn btn-success-rgba" onclick="editUser('{{ route('user.fetch', ['user' => $user->id]) }}')"><i class="feather icon-edit-2"></i></a>
                                             @endcan
 
-                                            @can('delete')
-                                            <a href="#" class="btn btn-danger-rgba" data-toggle="modal" data-target="#modal_delete" onclick="deleteUser('{{ route('user.destroy', ['user' => 1]) }}')"><i class="feather icon-trash"></i></a>
-                                            @endcan
+                                            @if(!($user->id == auth()->user()->id))
+                                                @can('delete')
+                                                <a href="#" class="btn btn-danger-rgba" data-toggle="modal" data-target="#modal_delete" onclick="deleteUser('{{ route('user.destroy', ['user' => $user->id]) }}')"><i class="feather icon-trash"></i></a>
+                                                @endcan
+                                            @else
+                                                <span>This is You</span>
+                                            @endif
+
                                         </div>
                                     </td>
                                 </tr>
+                                @empty
+
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -75,7 +98,6 @@
 <!-- End Contentbar -->
 
 {{-- Modals --}}
-
 <div class="modal fade bd-example-modal-lg" id="edit_user_modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -86,8 +108,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="" action="PUT">
+                <form method="POST" action="" id="updateForm">
                     @csrf
+                    @method('PUT')
                     <div class="form-row">
                         <div class="form-group col-md-7">
                             <input type="text" name="employee_id" class="form-control" placeholder="Employee ID *">
@@ -96,7 +119,7 @@
                             <input type="text" name="designation" class="form-control" placeholder="Designation *">
                         </div>
                     </div>
-
+                    <input type="hidden" name="id" value="">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <input type="text" class="form-control" id="inputCity" placeholder="First Name *" name="firstname">
@@ -114,7 +137,7 @@
                             <input type="number" class="form-control" id="inputCity" placeholder="Mobile *" name="phone_number">
                         </div>
                         <div class="form-group col-md-4">
-                            <select id="inputState" class="form-control" name="role">
+                            <select id="roleInput" class="form-control" name="role">
                                 <option selected="">Select Role Type...</option>
                                 @forelse($roles as $role)
                                     <option value="{{ $role->name }}">{{ $role->name }}</option>
@@ -133,7 +156,7 @@
                         </div>
 
                         <div class="form-group col-md-4">
-                            <input type="confirm_password" class="form-control" id="inputCity" placeholder="Confirm Password *">
+                            <input type="password_confirmation" class="form-control" id="inputCity" placeholder="Confirm Password *">
                         </div>
                     </div>
 
@@ -149,25 +172,29 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">Super Admin</th>
-                                    <td class="text-center">
-                                        <div class="form-check-inline checkbox-danger">
-                                          <input type="checkbox" disabled="" checked="" id="" name="">
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="form-check-inline checkbox-danger">
-                                          <input type="checkbox" disabled="" checked="true" id="" name="">
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="form-check-inline checkbox-danger">
-                                          <input type="checkbox" checked="" disabled="" id="customCheckboxInline8" name="customCheckboxInline2">
-                                          <label for="customCheckboxInline8"></label>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @forelse($roles as $role) 
+                                    <tr>
+                                        <th scope="row">{{ $role->name }}</th>
+                                        <td class="text-center">
+                                            <div class="form-check-inline checkbox-danger">
+                                              <input type="checkbox" disabled="" @if($role->hasPermissionTo('read')) checked="" @endif id="" name="">
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="form-check-inline checkbox-danger">
+                                              <input type="checkbox" disabled="" @if($role->hasPermissionTo('write')) checked="" @endif id="" name="">
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="form-check-inline checkbox-danger">
+                                              <input type="checkbox" @if($role->hasPermissionTo('delete')) checked="" @endif disabled="" id="customCheckboxInline8" name="customCheckboxInline2">
+                                              <label for="customCheckboxInline8"></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @empty
+
+                                    @endforelse
                             </tbody>
                         </table>          
                     </div>
@@ -191,35 +218,35 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form method="POST" action="{{ route('user.create') }}">
                     @csrf
                     <div class="form-row">
                         <div class="form-group col-md-7">
-                            <input type="text" name="employee_id" class="form-control" placeholder="Employee ID *">
+                            <input type="text" name="employee_id" class="form-control" required placeholder="Employee ID *">
                         </div>
                         <div class="form-group col-md-5">
-                            <input type="text" name="designation" class="form-control" placeholder="Designation *">
+                            <input type="text" name="designation" class="form-control" required placeholder="Designation *">
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <input type="text" class="form-control" id="inputCity" placeholder="First Name *" name="firstname">
+                            <input type="text" class="form-control" id="inputCity" required placeholder="First Name *" name="firstname">
                         </div>
 
                         <div class="form-group col-md-6">
-                            <input type="text" class="form-control" id="inputCity" placeholder="Last Name *" name="lastname">
+                            <input type="text" class="form-control" id="inputCity" required placeholder="Last Name *" name="lastname">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <input type="email" class="form-control" id="inputCity" placeholder="Email *" name="email">
+                            <input type="email" class="form-control" id="inputCity" required placeholder="Email *" name="email">
                         </div>
                         <div class="form-group col-md-4">
-                            <input type="number" class="form-control" id="inputCity" placeholder="Mobile *" name="phone_number">
+                            <input type="number" class="form-control" id="inputCity" required placeholder="Mobile *" name="phone_number">
                         </div>
                         <div class="form-group col-md-4">
-                            <select id="inputState" class="form-control" name="role">
+                            <select id="inputState" class="form-control" name="role" required>
                                 <option selected="">Select Role Type...</option>
                                 @forelse($roles as $role)
                                     <option value="{{ $role->name }}">{{ $role->name }}</option>
@@ -231,14 +258,14 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <input type="text" class="form-control" id="inputCity" placeholder="Username" name="username">
+                            <input type="text" class="form-control" id="inputCity" required placeholder="Username" name="username">
                         </div>
                         <div class="form-group col-md-4">
-                            <input type="password" class="form-control" id="inputCity" placeholder="Password *" name="password">
+                            <input type="password" class="form-control" id="inputCity" required placeholder="Password *" name="password">
                         </div>
 
                         <div class="form-group col-md-4">
-                            <input type="confirm_password" class="form-control" id="inputCity" placeholder="Confirm Password *">
+                            <input type="password" name="password_confirmation" class="form-control" id="inputCity" required placeholder="Confirm Password *">
                         </div>
                     </div>
 
@@ -254,25 +281,29 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @forelse($roles as $role) 
                                 <tr>
-                                    <th scope="row">Super Admin</th>
+                                    <th scope="row">{{ $role->name }}</th>
                                     <td class="text-center">
                                         <div class="form-check-inline checkbox-danger">
-                                          <input type="checkbox" disabled="" checked="" id="" name="">
+                                          <input type="checkbox" disabled="" @if($role->hasPermissionTo('read')) checked="" @endif id="" name="">
                                         </div>
                                     </td>
                                     <td class="text-center">
                                         <div class="form-check-inline checkbox-danger">
-                                          <input type="checkbox" disabled="" checked="true" id="" name="">
+                                          <input type="checkbox" disabled="" @if($role->hasPermissionTo('write')) checked="" @endif id="" name="">
                                         </div>
                                     </td>
                                     <td class="text-center">
                                         <div class="form-check-inline checkbox-danger">
-                                          <input type="checkbox" checked="" disabled="" id="customCheckboxInline8" name="customCheckboxInline2">
+                                          <input type="checkbox" @if($role->hasPermissionTo('delete')) checked="" @endif disabled="" id="customCheckboxInline8" name="customCheckboxInline2">
                                           <label for="customCheckboxInline8"></label>
                                         </div>
                                     </td>
                                 </tr>
+                                @empty
+
+                                @endforelse
                             </tbody>
                         </table>          
                     </div>
@@ -327,14 +358,17 @@
            url: route,
            type: 'GET',
            success: function(result) {
-                $('#edit_user_modal input[name="employee_id"]').val(result.data.name);
+                $('#edit_user_modal input[name="employee_id"]').val(result.data.employee_id);
                 $('#edit_user_modal input[name="email"]').val(result.data.email);
                 $('#edit_user_modal input[name="firstname"]').val(result.data.firstname);
                 $('#edit_user_modal input[name="lastname"]').val(result.data.lastname);
                 $('#edit_user_modal input[name="username"]').val(result.data.username);
                 $('#edit_user_modal input[name="phone_number"]').val(result.data.phone_number);
                 $('#edit_user_modal input[name="designation"]').val(result.data.designation);
-                $('#edit_user_modal input[name="role"]').att(result.data.role);
+                $('#edit_user_modal input[name="id"]').val(result.data.id);
+                $('#roleInput').val(result.data.roles[0].name);
+
+                $('#updateForm').attr({'action': '/users/'+result.data.id+'/update'})
                 $('#edit_user_modal').modal({show: true});
            }
        });
