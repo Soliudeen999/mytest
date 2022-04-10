@@ -22,6 +22,7 @@
     </head>
     <body class="vertical-layout">
         <!-- Start Infobar Setting Sidebar -->
+        @include('sweetalert::alert')
 
         <div class="row mx-0">
             <div class="col-auto pr-0 bg-primary" style="height: auto; color: white; margin-right: 0px !important;">
