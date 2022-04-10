@@ -15,7 +15,7 @@ This is just a simple app to solve a skill test and its built using laravel
 
 - Clone the repository with __git clone__
 - Copy __.env.example__ file to __.env__ and edit database credentials there
-- Run __composer install__
+- Run __composer install__ and __npm install && npm run dev__
 - Run __php artisan key:generate__
 - Run __php artisan migrate --seed__ (it has some seeded data for your testing)
 - That's it: launch the main URL. 
