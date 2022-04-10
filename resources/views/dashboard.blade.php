@@ -330,7 +330,7 @@
       </div>
       <div class="modal-body text-center">
         <form method="post" action="" id="edit_url">
-            <p class="text-danger">Selecting Yes will make all this user resources(Cards, Wallet, Bank Data etc) be removed compleetely in the system.</p>
+            <p class="text-danger">Selecting Yes will make all this user resources be removed compleetely in the system.</p>
             <p>Are you Sure to Delete?</p>
             <button type="button" class="btn btn-danger" id="yes_delete">Yes</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
