@@ -1,98 +1,79 @@
-<div class="navbar-expand-md">
-    <div class="collapse navbar-collapse" id="navbar-menu">
-        <div class="navbar navbar-light">
-            <div class="container-xl">
-                <ul class="navbar-nav">
-                    
-                    <li class="nav-item @if(request()->routeIs('home')) active @endif">
-                        <a class="nav-link" href="{{ route('home') }}" >
-                            <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="5 12 3 12 12 3 21 12 19 12" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
-                            </span>
-                            <span class="nav-link-title">
-                                {{ __('Dashboard') }}
-                            </span>
-                        </a>
-                    </li>
+<ul class="nav flex-column pt-3 pt-md-0">
+    <li class="nav-item">
+        <a href="{{ route('home') }}" class="nav-link d-flex align-items-center">
+            <span class="sidebar-icon me-3">
+                <img src="{{ asset('images/brand/light.svg') }}" height="20" width="20" alt="Volt Logo">
+            </span>
+            <span class="mt-1 ms-1 sidebar-text">
+                AdPlay
+            </span>
+        </a>
+    </li>
 
-                    <li class="nav-item @if(request()->routeIs('users.index')) active @endif">
-                        <a class="nav-link" href="{{ route('users.index') }}" >
-                            <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/file-text -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <circle cx="9" cy="7" r="4"></circle>
-                                    <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                    <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
-                                </svg>
-                            </span>
-                            <span class="nav-link-title">
-                                {{ __('Users') }}
-                            </span>
-                        </a>
-                    </li>
+    <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
+        <a href="{{ route('home') }}" class="nav-link">
+            <span class="sidebar-icon">
+                <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+                    <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+                </svg>
+            </span>
+            <span class="sidebar-text">{{ __('Gallery') }}</span>
+        </a>
+    </li>
 
-                    <li class="nav-item @if(request()->routeIs('about')) active @endif">
-                        <a class="nav-link" href="{{ route('about') }}" >
-                            <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/file-text -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <circle cx="12" cy="12" r="9"></circle>
-                                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                                        <polyline points="11 12 12 12 12 16 13 16"></polyline>
-                                    </svg>
-                            </span>
-                            <span class="nav-link-title">
-                                {{ __('About') }}
-                            </span>
-                        </a>
-                    </li>
+    <li class="nav-item {{ request()->routeIs('users.index') ? 'active' : '' }}">
+        <a href="{{ route('users.index') }}" class="nav-link">
+            <span class="sidebar-icon me-3">
+                <i class="fas fa-user-alt fa-fw"></i>
+            </span>
+            <span class="sidebar-text">{{ __('Users') }}</span>
+        </a>
+    </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
-                            <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M13 5h8"></path>
-                                    <path d="M13 9h5"></path>
-                                    <path d="M13 15h8"></path>
-                                    <path d="M13 19h5"></path>
-                                    <rect x="3" y="4" width="6" height="6" rx="1"></rect>
-                                    <rect x="3" y="14" width="6" height="6" rx="1"></rect>
-                                </svg>
-                            </span>
-                            <span class="nav-link-title">
-                            Submenus
-                            </span>
-                        </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" >
-                                Submenu Item #1
-                            </a>
-                            <div class="dropend">
-                                <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    Submenu Item #2
-                                </a>
-                                <div class="dropdown-menu">
-                                  <a href="#" class="dropdown-item">
-                                    Subsubmenu Item #1
-                                  </a>
-                                  <a href="#" class="dropdown-item">
-                                    Subsubmenu Item #2
-                                  </a>
-                                  <a href="#" class="dropdown-item">
-                                    Subsubmenu Item #3
-                                  </a>
-                                </div>
-                              </div>
-                            <a class="dropdown-item" href="#" >
-                                Submenu Item #3
-                            </a>
-                        </div>
-                    </li>
+    {{-- <li class="nav-item {{ request()->routeIs('about') ? 'active' : '' }}">
+        <a href="{{ route('about') }}" class="nav-link">
+            <span class="sidebar-icon">
+                <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+                    <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+                </svg>
+            </span>
+            <span class="sidebar-text">{{ __('About us') }}</span>
+        </a>
+    </li> --}}
 
-                </ul>
-            </div>
+    {{-- <li class="nav-item">
+        <span class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+            data-bs-target="#submenu-app">
+            <span>
+                <span class="sidebar-icon me-3">
+                    <i class="fas fa-circle fa-fw"></i>
+                </span>
+                <span class="sidebar-text">Two-level menu</span>
+            </span>
+            <span class="link-arrow">
+                <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clip-rule="evenodd">
+                    </path>
+                </svg>
+            </span>
+        </span>
+        <div class="multi-level collapse" role="list" id="submenu-app" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <span class="sidebar-icon">
+                            <i class="fas fa-circle"></i>
+                        </span>
+                        <span class="sidebar-text">Child menu</span>
+                    </a>
+                </li>
+            </ul>
         </div>
-    </div>
-</div>
+    </li> --}}
+</ul>

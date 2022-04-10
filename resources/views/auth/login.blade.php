@@ -43,10 +43,4 @@
         </div>
     </form>
 
-    @if (Route::has('register'))
-    <div class="text-center text-muted mt-3">
-        {{ __("Don't have account yet?") }} <a href="{{ route('register') }}" tabindex="-1">{{ __('Sign up') }}</a>
-    </div>
-    @endif
-
 @endsection

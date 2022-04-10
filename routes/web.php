@@ -22,15 +22,11 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function () {
-    Route::view('about', 'about')->name('about');
 
     Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
     Route::get('users/{user}/delete', [\App\Http\Controllers\UserController::class, 'destroy'])->name('user.destroy');
     Route::get('users/{user}/fetch', [\App\Http\Controllers\UserController::class, 'fetchUser'])->name('user.fetch');
     Route::post('users/create', [\App\Http\Controllers\UserController::class, 'create'])->name('user.create');
     Route::put('users/{user}/update', [\App\Http\Controllers\UserController::class, 'UpdateUser'])->name('user.update');
-
-    Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
-    Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
    
 });
